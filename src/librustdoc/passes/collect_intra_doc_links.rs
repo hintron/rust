@@ -852,6 +852,7 @@ impl<'a, 'tcx> DocVisitor for LinkCollector<'a, 'tcx> {
             debug!("combined_docs={}", doc);
             // NOTE: if there are links that start in one crate and end in another, this will not resolve them.
             // This is a degenerate case and it's not supported by rustdoc.
+            // MGH: Is this true, though? These type of links can work with a proper `use XXX`.
             let parent_node = parent_module.or(parent_node);
             let mut tmp_links = self
                 .cx
@@ -1237,6 +1238,7 @@ impl LinkCollector<'_, '_> {
             }
             suggest_disambiguator(resolved, diag, path_str, &ori_link.link, sp);
         };
+        info!("MGH: report_disambiguator_mismatch()");
         report_diagnostic(self.cx.tcx, BROKEN_INTRA_DOC_LINKS, &msg, diag_info, callback);
     }
 
@@ -1664,6 +1666,8 @@ fn resolution_failure(
 ) -> Option<(Res, Option<DefId>)> {
     let tcx = collector.cx.tcx;
     let mut recovered_res = None;
+
+    info!("MGH: resolution_failure()");
     report_diagnostic(
         tcx,
         BROKEN_INTRA_DOC_LINKS,
@@ -1873,6 +1877,7 @@ fn anchor_failure(
     msg: &str,
     anchor_idx: usize,
 ) {
+    info!("MGH: anchor_failure()");
     report_diagnostic(cx.tcx, BROKEN_INTRA_DOC_LINKS, msg, &diag_info, |diag, sp| {
         if let Some(mut sp) = sp {
             if let Some((fragment_offset, _)) =
@@ -1892,6 +1897,7 @@ fn disambiguator_error(
     disambiguator_range: Range<usize>,
     msg: &str,
 ) {
+    info!("MGH: disambiguator_error()");
     diag_info.link_range = disambiguator_range;
     report_diagnostic(cx.tcx, BROKEN_INTRA_DOC_LINKS, msg, &diag_info, |diag, _sp| {
         let msg = format!(
@@ -1908,6 +1914,7 @@ fn report_malformed_generics(
     err: MalformedGenerics,
     path_str: &str,
 ) {
+    info!("MGH: report_malformed_generics()");
     report_diagnostic(
         cx.tcx,
         BROKEN_INTRA_DOC_LINKS,
@@ -1967,6 +1974,7 @@ fn ambiguity_error(
         }
     }
 
+    info!("MGH: ambiguity_error()");
     report_diagnostic(cx.tcx, BROKEN_INTRA_DOC_LINKS, &msg, &diag_info, |diag, sp| {
         if let Some(sp) = sp {
             diag.span_label(sp, "ambiguous link");
@@ -2018,6 +2026,7 @@ fn privacy_error(cx: &DocContext<'_>, diag_info: &DiagnosticInfo<'_>, path_str: 
     let msg =
         format!("public documentation for `{}` links to private item `{}`", item_name, path_str);
 
+    info!("MGH: privacy_error()");
     report_diagnostic(cx.tcx, PRIVATE_INTRA_DOC_LINKS, &msg, diag_info, |diag, sp| {
         if let Some(sp) = sp {
             diag.span_label(sp, "this item is private");

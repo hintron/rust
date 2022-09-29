@@ -123,6 +123,10 @@ mod visit_ast;
 mod visit_lib;
 
 pub fn main() {
+    // MGH: Printing to the stdout will cause `cargo doc` to fail, so only use
+    // the following line as a quick sanity check for `cargo rustdoc -- -V`:
+    // println!("Hello, world, from MGH!");
+
     // See docs in https://github.com/rust-lang/rust/blob/master/compiler/rustc/src/main.rs
     // about jemalloc.
     #[cfg(feature = "jemalloc")]
@@ -231,7 +235,7 @@ fn opts() -> Vec<RustcOptGroup> {
     let stable: fn(_, fn(&mut getopts::Options) -> &mut _) -> _ = RustcOptGroup::stable;
     let unstable: fn(_, fn(&mut getopts::Options) -> &mut _) -> _ = RustcOptGroup::unstable;
     vec![
-        stable("h", |o| o.optflagmulti("h", "help", "show this help message")),
+        stable("h", |o| o.optflagmulti("h", "help", "Hello, world, from MGH!")),
         stable("V", |o| o.optflagmulti("V", "version", "print rustdoc's version")),
         stable("v", |o| o.optflagmulti("v", "verbose", "use verbose output")),
         stable("w", |o| o.optopt("w", "output-format", "the output type to write", "[html]")),
