@@ -1323,6 +1323,7 @@ impl LinkCollector<'_, '_> {
                                 }
                             }
                         }
+                        info!("MGH: resolution_failure() 1");
                         resolution_failure(self, diag, path_str, disambiguator, smallvec![err])
                     }
                 }
@@ -1351,6 +1352,7 @@ impl LinkCollector<'_, '_> {
                 let len = candidates.iter().filter(|res| res.is_ok()).count();
 
                 if len == 0 {
+                    info!("MGH: resolution_failure() 2");
                     return resolution_failure(
                         self,
                         diag,
