@@ -29,7 +29,8 @@ Session.vim
 !/src/test/run-make/thumb-none-qemu/example/.cargo
 
 ## Configuration
-/config.toml
+# MGH: Commit config.toml for easier prototyping
+# /config.toml
 /Makefile
 config.mk
 config.stamp

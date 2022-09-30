@@ -1,0 +1,10 @@
+# Includes one of the default files in src/bootstrap/defaults
+
+# MGH: Set build profile to build all of Rust ("user"), not just "tools", or
+# else cargo doc will complain about a rustc version mismatch. rustdoc and rustc
+# really need to be on the same version to build docs for an external module.
+profile = "user"
+
+# MGH: What does this do?
+changelog-seen = 2
+
