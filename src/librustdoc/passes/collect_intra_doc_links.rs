@@ -851,11 +851,13 @@ impl<'a, 'tcx> DocVisitor for LinkCollector<'a, 'tcx> {
             if !may_have_doc_links(&doc) {
                 continue;
             }
-            debug!("combined_docs={}", doc);
             // NOTE: if there are links that start in one crate and end in another, this will not resolve them.
             // This is a degenerate case and it's not supported by rustdoc.
             // MGH: Is this true, though? These type of links can work with a proper `use XXX`.
+            debug!("MGH: parent_module={:?}", parent_module);
             let parent_node = parent_module.or(parent_node);
+            debug!("MGH: parent_node={:?}", parent_node);
+            debug!("combined_docs={}", doc);
             let mut tmp_links = self
                 .cx
                 .resolver_caches
