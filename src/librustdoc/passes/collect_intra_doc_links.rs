@@ -451,6 +451,7 @@ impl<'a, 'tcx> LinkCollector<'a, 'tcx> {
         item_id: ItemId,
         module_id: DefId,
     ) -> Result<(Res, Option<DefId>), UnresolvedPath<'path>> {
+        debug!("resolve_path() 1");
         if let Some(res) = self.resolve_path(path_str, ns, item_id, module_id) {
             return Ok(match res {
                 Res::Def(
@@ -493,6 +494,7 @@ impl<'a, 'tcx> LinkCollector<'a, 'tcx> {
         // links to primitives when `#[doc(primitive)]` is present. It should give an ambiguity
         // error instead and special case *only* modules with `#[doc(primitive)]`, not all
         // primitives.
+        debug!("resolve_path() 2");
         resolve_primitive(&path_root, TypeNS)
             .or_else(|| self.resolve_path(&path_root, TypeNS, item_id, module_id))
             .and_then(|ty_res| {
@@ -1303,6 +1305,7 @@ impl LinkCollector<'_, '_> {
 
         match disambiguator.map(Disambiguator::ns) {
             Some(expected_ns) => {
+                debug!("resolve() - expected_ns={:?}", expected_ns);
                 match self.resolve(path_str, expected_ns, item_id, base_node) {
                     Ok(res) => Some(res),
                     Err(err) => {
@@ -1329,6 +1332,7 @@ impl LinkCollector<'_, '_> {
                 }
             }
             None => {
+                debug!("resolve() - try everything");
                 // Try everything!
                 let mut candidate = |ns| {
                     self.resolve(path_str, ns, item_id, base_node)
@@ -1587,6 +1591,7 @@ impl Suggestion {
     }
 }
 
+
 /// Reports a diagnostic for an intra-doc link.
 ///
 /// If no link range is provided, or the source span of the link cannot be determined, the span of
@@ -1601,9 +1606,14 @@ fn report_diagnostic(
     tcx: TyCtxt<'_>,
     lint: &'static Lint,
     msg: &str,
-    DiagnosticInfo { item, ori_link: _, dox, link_range }: &DiagnosticInfo<'_>,
+    DiagnosticInfo { item, ori_link, dox, link_range }: &DiagnosticInfo<'_>,
     decorate: impl FnOnce(&mut Diagnostic, Option<rustc_span::Span>),
 ) {
+    debug!("MGH: ori_link:{:?}", ori_link);
+    debug!("MGH: link_range:{:?}", link_range);
+    debug!("MGH: item:{:?}", item);
+    // debug!("MGH: dox:{:?}", dox); // Should be the same as item.docs
+
     let Some(hir_id) = DocContext::as_local_hir_id(tcx, item.item_id)
     else {
         // If non-local, no need to check anything.
