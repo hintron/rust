@@ -8,3 +8,7 @@ profile = "user"
 # MGH: What does this do?
 changelog-seen = 2
 
+[rust]
+# MGH: For now, just elevate any relevant debugs and traces to infos!
+# # MGH: Enable debug and trace
+# debug-logging = true 
