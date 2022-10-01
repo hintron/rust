@@ -1622,8 +1622,11 @@ fn report_diagnostic(
         // info!("ignoring warning from parent crate: {}", msg);
         // return;
 
-        // MGH TODO: We don't want to just emit an info and return early here. We want to fail! At least for now, since I can't figure out how to spit out a diagnostic without an hir_id.
-        bug!("MGH: Intra-doc link failed: {}", msg);
+        // MGH: Abort rustdoc to fix this error.
+        // I'm not sure how to create a diag for this without an hir_id...
+        info!("\nMGH: Intra-doc link failed: {}\n", msg);
+        info!("MGH: Aborting rustdoc\n\n");
+        std::process::exit(1);
     };
 
     let sp = item.attr_span(tcx);
