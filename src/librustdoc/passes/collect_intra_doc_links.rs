@@ -1021,7 +1021,7 @@ impl LinkCollector<'_, '_> {
         link: &PreprocessedMarkdownLink,
     ) -> Option<ItemLink> {
         let PreprocessedMarkdownLink(pp_link, ori_link) = link;
-        trace!("considering link '{}'", ori_link.link);
+        debug!("considering link '{}'", ori_link.link);
 
         let diag_info = DiagnosticInfo {
             item,
