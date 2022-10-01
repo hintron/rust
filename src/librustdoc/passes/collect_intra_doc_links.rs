@@ -1617,8 +1617,11 @@ fn report_diagnostic(
     let Some(hir_id) = DocContext::as_local_hir_id(tcx, item.item_id)
     else {
         // If non-local, no need to check anything.
-        info!("ignoring warning from parent crate: {}", msg);
-        return;
+        // info!("ignoring warning from parent crate: {}", msg);
+        // return;
+
+        // MGH TODO: We don't want to just emit an info and return early here. We want to fail! At least for now, since I can't figure out how to spit out a diagnostic without an hir_id.
+        bug!("MGH: Intra-doc link failed: {}", msg);
     };
 
     let sp = item.attr_span(tcx);
