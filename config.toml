@@ -9,6 +9,10 @@ profile = "user"
 changelog-seen = 2
 
 [rust]
-# MGH: For now, just elevate any relevant debugs and traces to infos!
-# # MGH: Enable debug and trace
-# debug-logging = true 
+# MGH: Enable debug and trace for everything
+debug-logging = true
+# This gets rid of the following warning:
+# warning: some trace filter directives would enable traces that are disabled
+# statically
+# `rustdoc::passes::collect_intra_doc_links=trace` would enable the TRACE level
+# for the `rustdoc::passes::collect_intra_doc_links` target
