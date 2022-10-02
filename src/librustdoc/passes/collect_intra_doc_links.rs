@@ -1624,8 +1624,9 @@ fn report_diagnostic(
 
         // MGH: Abort rustdoc to fix this error.
         // I'm not sure how to create a diag for this without an hir_id...
-        info!("\nMGH: Intra-doc link failed: {}\n", msg);
-        info!("MGH: Aborting rustdoc\n\n");
+        println!("\n\n");
+        println!("MGH: Intra-doc link failed: {}\n", msg);
+        println!("MGH: Aborting rustdoc\n\n");
         std::process::exit(1);
     };
 
